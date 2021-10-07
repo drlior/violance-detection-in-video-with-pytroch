@@ -23,7 +23,7 @@ app = Flask("main-webapi")
 
 
 @app.route('/api/fight/', methods=['GET', 'POST'])
-def main_fight(accuracyfight=0.65):
+def main_fight(accuracyfight=0.50):
     res_mamon = {}
     if os.path.exists('./tmp.avi'):
         os.remove('./tmp.avi')
@@ -31,7 +31,7 @@ def main_fight(accuracyfight=0.65):
     file = open("tmp.avi", "wb")
     file.write(filev.read())
     file.close()
-    vid = capture("tmp.avi", 40, 3, 170, 170)
+    vid = capture("tmp.avi", 10, 3, 170, 170)
     v = np.array([vid])
     v = torch.from_numpy(v)
     v = v.to(device, dtype=torch.float)
