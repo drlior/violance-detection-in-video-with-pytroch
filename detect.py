@@ -13,7 +13,9 @@ urls = target + '/api/fight/'
 
 # cap = cv2.VideoCapture('hospital.mp4')
 
-cap = cv2.VideoCapture(0)
+
+
+cap = cv2.VideoCapture("weapons.avi")
 # cap = cv2.VideoCapture("input/violence1.avi")
 
 fps = int(cap.get(cv2.CAP_PROP_FPS))
@@ -49,7 +51,10 @@ while True:
                     2,
                     cv2.LINE_4)
 
-    cv2.imshow('video', frame)
+    try:
+        cv2.imshow('video', frame)
+    except:
+        pass
 
     # describe the type of font
     # to be used.
@@ -74,9 +79,11 @@ while True:
         violence_detected = json_data["fight"]
         percent = json_data["precentegeoffight"]
         percent_interval = float(percent) - last_percent
-        last_percent = float(percent)
-        if percent_interval > 0.1:
+
+        if percent_interval > 0.1 and float(percent) > 0.2 and last_percent > 0:
             violence_detected = True
+
+        last_percent = float(percent)
 
 
         millis2 = int(round(time.time() * 1000))
@@ -114,7 +121,6 @@ while True:
 
         i += 1
 
-    cv2.imshow('video', frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

@@ -23,7 +23,7 @@ app = Flask("main-webapi")
 
 
 @app.route('/api/fight/', methods=['GET', 'POST'])
-def main_fight(accuracyfight=0.50):
+def main_fight(accuracyfight=0.60):
     res_mamon = {}
     if os.path.exists('./tmp.avi'):
         os.remove('./tmp.avi')
