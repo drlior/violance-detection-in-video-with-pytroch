@@ -11,13 +11,13 @@ from skimage.transform import resize
 target = "http://127.0.0.1:3091"
 urls = target + '/api/fight/'
 
-# cap = cv2.VideoCapture('hospital.mp4')
+cap = cv2.VideoCapture('hospital.mp4')
 
 
 
-cap = cv2.VideoCapture("weapons.avi")
+# cap = cv2.VideoCapture("weapons.avi")
 # cap = cv2.VideoCapture("input/violence1.avi")
-
+# cap = cv2.VideoCapture(0)
 fps = int(cap.get(cv2.CAP_PROP_FPS))
 fwidth = cap.get(cv2.CAP_PROP_FRAME_WIDTH)   # float `width`
 fheight = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)  # float `height`
@@ -31,21 +31,21 @@ frames = np.zeros((fps, 160, 160, 3), dtype=np.float)
 old = []
 j = 0
 
-font = cv2.FONT_HERSHEY_SIMPLEX
+font = cv2.FONT_HERSHEY_TRIPLEX
 violence_detected = False
+percent = 0
 last_percent = 0
 percent_interval = float(0)
 while True:
 
-    percent = 0
     ret, frame = cap.read()
     if ret:
         tmpio.write(frame)
 
     if violence_detected:
         cv2.putText(frame,
-                    'Violance Deacted  ... Violence .. violence',
-                    (50, 50),
+                    '%s Violance' % int(percent*100),
+                    (29, 100),
                     font, 3,
                     (0, 255, 255),
                     2,
@@ -77,7 +77,7 @@ while True:
 
         json_data = json.loads(r.text)
         violence_detected = json_data["fight"]
-        percent = json_data["precentegeoffight"]
+        percent = float(json_data["precentegeoffight"])
         percent_interval = float(percent) - last_percent
 
         if percent_interval > 0.1 and float(percent) > 0.2 and last_percent > 0:
